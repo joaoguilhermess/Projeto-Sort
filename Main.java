@@ -55,18 +55,18 @@ public class Main {
 
 	public static void main(String[] args) {
 		List<Integer> amounts = Arrays.asList(
-			1,
-			10,
-			100,
-			1000,
-			5000,
-			10000,
-			20000,
-			30000,
-			50000,
-			75000,
-			100000,
-			0
+			//1,
+			//10,
+			100
+			//1000,
+			//5000,
+			//10000,
+			//20000,
+			//30000,
+			//50000,
+			//75000,
+			//100000,
+			//0
 		);
 
 		String path = "./data/uber.csv";
@@ -86,7 +86,7 @@ public class Main {
 				"Duracao" +
 				"\n"
 			);
-
+			
 			for (int i = 0; i < amounts.size(); i++) {
 				List<Report> allReports = read(path, amounts.get(i));
 
@@ -176,7 +176,19 @@ public class Main {
 					"\n"
 				);
 			}
-
+//______________________________________________
+		for (int i = 0; i < amounts.size(); i++) {	
+			List<Report> allReports = read(path, amounts.get(i));
+			Search search = new Search(allReports);
+			
+			Report encontrado = search.pesquisaSequencial(2,"\"\"\"CNR1950162\"\"\"");
+			if(encontrado!=null){
+				System.out.println("Comparações: "+search.getcomparisons());
+			}
+			else{
+				System.out.println("Não foi possivel encontrar");
+			}
+		}	
 			file.close();
 		} catch (IOException exception) {
 			exception.printStackTrace();
