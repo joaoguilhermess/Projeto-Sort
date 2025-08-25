@@ -1,11 +1,16 @@
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.io.FileWriter;
 import java.util.Arrays;
 import java.util.List;
 
 public class Main {
 	public static List<Report> read(String path, int limit) {
+		long start = System.nanoTime();
+
+		System.out.println("Lendo: " + limit);
+
 		List<Report> result = new ArrayList<>();
 
 		String line = "";
@@ -42,57 +47,139 @@ public class Main {
 			exception.printStackTrace();
 		}
 
+		System.out.println("Duração: " + Util.formatTime(System.nanoTime() - start));
+		System.out.println();
+
 		return result;
 	}
 
 	public static void main(String[] args) {
 		List<Integer> amounts = Arrays.asList(
-			// 1,
-			// 10,
-			// 100,
-			// 1000
-			5000
-			// 10000,
-			// 15000,
-			// 20000
+			1,
+			10,
+			100,
+			1000,
+			5000,
+			10000,
+			20000,
+			30000,
+			50000,
+			75000,
+			100000,
+			0
 		);
 
-		for (int i = 0; i < amounts.size(); i++) {
-			List<Report> allReports = read("./data/uber.csv", amounts.get(i));
+		String path = "./data/uber.csv";
 
-			Sort sort = new Sort(allReports);
+		try {
+			FileWriter file = new FileWriter("./data/results.csv");
 
-			sort.bubbleSort(2);
-			// sort.selectSort(2);
+			file.append(
+				"Metodo" + 
+				";" +
+				"Quantidade" + 
+				";" +
+				"Trocas" + 
+				";" +
+				"Comparacoes" + 
+				";" +
+				"Duracao" +
+				"\n"
+			);
 
-			System.out.println("Bubble:");
-		
-			System.out.println("Quantidade: " + Util.formatNumber(allReports.size()));
-			System.out.println("Trocas: " + Util.formatNumber(sort.getSwaps()));
-			System.out.println("Comparações: " + Util.formatNumber(sort.getComparisons()));
-			System.out.printf("Duração: %.4f ms", sort.getDuration());
+			for (int i = 0; i < amounts.size(); i++) {
+				List<Report> allReports = read(path, amounts.get(i));
 
-			System.out.println();
-			System.out.println();
-		}
+				System.out.println("Bubble:");
 
-		for (int i = 0; i < amounts.size(); i++) {
-			List<Report> allReports = read("./data/uber.csv", amounts.get(i));
+				Sort sort = new Sort(allReports);
 
-			Sort sort = new Sort(allReports);
+				sort.bubbleSort(2);
+			
+				System.out.println("Quantidade: " + Util.formatNumber(allReports.size()));
+				System.out.println("Trocas: " + Util.formatNumber(sort.getSwaps()));
+				System.out.println("Comparações: " + Util.formatNumber(sort.getComparisons()));
+				System.out.println("Duração: " + Util.formatTime(sort.getDuration()));
 
-			// sort.bubbleSort(2);
-			sort.selectSort(2);
+				System.out.println();
 
-			System.out.println("Select:");
+				file.append(
+					"Bubble" +
+					";" +
+					Util.formatNumber(allReports.size()) +
+					";" +
+					Util.formatNumber(sort.getSwaps()) +
+					";" +
+					Util.formatNumber(sort.getComparisons()) +
+					";" +
+					Util.formatTime(sort.getDuration()) +
+					"\n"
+				);
+			}
 
-			System.out.println("Quantidade: " + Util.formatNumber(allReports.size()));
-			System.out.println("Trocas: " + Util.formatNumber(sort.getSwaps()));
-			System.out.println("Comparações: " + Util.formatNumber(sort.getComparisons()));
-			System.out.printf("Duração: %.4f ms", sort.getDuration());
+			for (int i = 0; i < amounts.size(); i++) {
+				List<Report> allReports = read(path, amounts.get(i));
 
-			System.out.println();
-			System.out.println();
+				System.out.println("Select:");
+
+				Sort sort = new Sort(allReports);
+
+				sort.selectSort(2);
+
+				System.out.println("Quantidade: " + Util.formatNumber(allReports.size()));
+				System.out.println("Trocas: " + Util.formatNumber(sort.getSwaps()));
+				System.out.println("Comparações: " + Util.formatNumber(sort.getComparisons()));
+				System.out.println("Duração: " + Util.formatTime(sort.getDuration()));
+
+				System.out.println();
+
+				file.append(
+					"Select" +
+					";" +
+					Util.formatNumber(allReports.size()) +
+					";" +
+					Util.formatNumber(sort.getSwaps()) +
+					";" +
+					Util.formatNumber(sort.getComparisons()) +
+					";" +
+					Util.formatTime(sort.getDuration()) +
+					"\n"
+				);
+			}
+
+			for (int i = 0; i < amounts.size(); i++) {
+				List<Report> allReports = read(path, amounts.get(i));
+
+				System.out.println("Insertion:");
+
+				Sort sort = new Sort(allReports);
+
+				sort.insertSort(2);
+			
+				System.out.println("Quantidade: " + Util.formatNumber(allReports.size()));
+				System.out.println("Trocas: " + Util.formatNumber(sort.getSwaps()));
+				System.out.println("Comparações: " + Util.formatNumber(sort.getComparisons()));
+				System.out.println("Duração: " + Util.formatTime(sort.getDuration()));
+
+				System.out.println();
+
+				file.append(
+					"Insertion" +
+					";" +
+					Util.formatNumber(allReports.size()) +
+					";" +
+					Util.formatNumber(sort.getSwaps()) +
+					";" +
+					Util.formatNumber(sort.getComparisons()) +
+					";" +
+					Util.formatTime(sort.getDuration()) +
+					"\n"
+				);
+			}
+
+			file.close();
+		} catch (IOException exception) {
+			exception.printStackTrace();
 		}
 	}
 }
