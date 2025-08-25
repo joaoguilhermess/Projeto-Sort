@@ -65,6 +65,8 @@ public class Main {
 			sort.bubbleSort(2);
 			// sort.selectSort(2);
 
+			System.out.println("Bubble:");
+		
 			System.out.println("Quantidade: " + Util.formatNumber(allReports.size()));
 			System.out.println("Trocas: " + Util.formatNumber(sort.getSwaps()));
 			System.out.println("Comparações: " + Util.formatNumber(sort.getComparisons()));
@@ -81,6 +83,8 @@ public class Main {
 
 			// sort.bubbleSort(2);
 			sort.selectSort(2);
+
+			System.out.println("Select:");
 
 			System.out.println("Quantidade: " + Util.formatNumber(allReports.size()));
 			System.out.println("Trocas: " + Util.formatNumber(sort.getSwaps()));
