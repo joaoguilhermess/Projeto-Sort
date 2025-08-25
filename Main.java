@@ -62,6 +62,23 @@ public class Main {
 
 			Sort sort = new Sort(allReports);
 
+			sort.bubbleSort(2);
+			// sort.selectSort(2);
+
+			System.out.println("Quantidade: " + Util.formatNumber(allReports.size()));
+			System.out.println("Trocas: " + Util.formatNumber(sort.getSwaps()));
+			System.out.println("Comparações: " + Util.formatNumber(sort.getComparisons()));
+			System.out.printf("Duração: %.4f ms", sort.getDuration());
+
+			System.out.println();
+			System.out.println();
+		}
+
+		for (int i = 0; i < amounts.size(); i++) {
+			List<Report> allReports = read("./data/uber.csv", amounts.get(i));
+
+			Sort sort = new Sort(allReports);
+
 			// sort.bubbleSort(2);
 			sort.selectSort(2);
 
