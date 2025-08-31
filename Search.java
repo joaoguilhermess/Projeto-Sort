@@ -22,26 +22,55 @@ public class Search extends Chronometer {
 	public Report sequentialSearch(String value) {
 		this.start();
 
-		Report current = null;
+		Report current;
 
 		for (int i = 0; i < this.reports.size(); i++) {
 			current = this.reports.get(i);
 
-			if (current.getNOME().equals(value)) {
-				break;
-			}
+			this.comparisons += 1;
+			
+			if (current.getNOME().equals(value)) {				
+				this.stop();
 
+				return current;
+			}
+		}
+
+		this.stop();
+
+		return null;
+	}
+
+	public Report binarySearch(String value) {
+		this.start();
+
+		int left = 0;
+		int right = this.reports.size() - 1;
+
+		Report current;
+
+		while (left <= right) {
+			int middle = left + (right - left) / 2;
+
+			current = this.reports.get(middle);
+
+			this.comparisons += 1;
+			
+			if (current.getNOME().equals(value)) {
+				this.stop();
+
+				return current;
+			} else if (current.getNOME().compareTo(value) > 0) {
+				left = middle + 1;
+			} else {
+				right = middle - 1;
+			}
+		
 			this.comparisons += 1;
 		}
 
 		this.stop();
 
-		return current;
-	}
-
-	public void binarySearch() {
-		this.start();
-
-		this.stop();
+		return null;
 	}
 }

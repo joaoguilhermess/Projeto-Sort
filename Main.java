@@ -41,11 +41,11 @@ public class Main {
 
 			printResults("mergeSort", sort);
 
-			Search search = new Search(list);
+			// Search search = new Search(list);
 
-			search.sequentialSearch("IVES RAYLLAN DO NASCIMENTO SOUZA");
+			// search.binarySearch("IVES RAYLLAN DO NASCIMENTO SOUZA");
 
-			printResults("sequentialSearch", search);
+			// printResults("binarySearch", search);
 
 			writer.close();
 		} catch (Exception exception) {
@@ -55,13 +55,13 @@ public class Main {
 
 	public static void main2(String[] args) {
 		int[] amounts = {
-			400_000
-			// 500_000,
-			// 600_000,
-			// 700_000,
-			// 800_000,
-			// 900_000,
-			// 1_000_000
+			400_000,
+			500_000,
+			600_000,
+			700_000,
+			800_000,
+			900_000,
+			1_000_000
 		};
 
 		try {
@@ -138,7 +138,7 @@ public class Main {
 
 		printResults("mergeSort", sort);
 	}
-	
+
 	public static void writeResults(String method, Search search) {
 		try {
 			writer.append(

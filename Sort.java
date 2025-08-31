@@ -144,10 +144,10 @@ public class Sort extends Chronometer {
 
 		int middle = (left + right) / 2;
 
-		recursiveMergeSort(workSpace, left, middle);
-		recursiveMergeSort(workSpace, middle + 1, right);
+		this.recursiveMergeSort(workSpace, left, middle);
+		this.recursiveMergeSort(workSpace, middle + 1, right);
 
-		merge(workSpace, left, middle + 1, right);
+		this.merge(workSpace, left, middle + 1, right);
 	}
 
 	public void mergeSort() {
@@ -155,16 +155,89 @@ public class Sort extends Chronometer {
 
 		Report[] workSpace = new Report[this.reports.size()];
 
-		recursiveMergeSort(workSpace, 0, this.reports.size() - 1);
+		this.recursiveMergeSort(workSpace, 0, this.reports.size() - 1);
 
 		this.stop();
 	}
 
-	public void heapSort() {
-		
-	}
-	
-	public void quickSort() {
+	private void heapify(int k, int i) {
+		int largest = i;
+		int left = i * 2 + 1;
+		int right = i * 2 + 2;
 
+		if (left < k && Report.compare(this.reports.get(left), this.reports.get(largest))) {
+			largest = left;
+		}
+
+		this.comparisons += 1;
+
+		if (right < k && Report.compare(this.reports.get(left), this.reports.get(largest))) {
+			largest = right;
+		}
+
+		this.comparisons += 1;
+
+		if (largest != i) {
+			this.swap(i, largest);
+
+			this.heapify(k, largest);
+		}
+	}
+
+	public void heapSort() {
+		this.start();
+
+		int k = this.reports.size();
+
+		for (int i = k / 2 - 1; i >= 0; i--) {
+			this.heapify(k, i);
+		}
+
+		for (int i = k - 1; i > 0; i--) {
+			this.swap(0, i);
+
+			this.heapify(i, 0);
+		}
+
+		this.stop();
+	}
+
+	private int partition(int left, int right) {
+		Report pivot = this.reports.get(right);
+
+		int k = left - 1;
+
+		for (int i = left; i < right; i++) {
+			if (Report.compare(this.reports.get(i), pivot)) {
+				k += 1;
+
+				this.swap(k, i);
+			}
+
+			this.comparisons += 1;
+		}
+
+		k += 1;
+
+		this.swap(k, right);
+
+		return k;
+	}
+
+	public void quickSort(int left, int right) {
+		if (left < right) {
+			int pivotIndex = this.partition(left, right);
+
+			this.quickSort(left, pivotIndex - 1);
+			this.quickSort(pivotIndex + 1, right);
+		}
+	}
+
+	public void quickSort() {
+		this.start();
+
+		this.quickSort(0, this.reports.size() - 1);
+
+		this.stop();
 	}
 }

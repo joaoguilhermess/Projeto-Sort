@@ -69,6 +69,6 @@ public class Report {
 
 	public static boolean compare(Report reportA, Report reportB) {
 		// return reportA.getNOME().compareTo(reportB.getNOME()) > 0;
-		return reportA.getNOTA_FINAL() > reportB.getNOTA_FINAL();
+		return reportA.getNOTA_FINAL() <= reportB.getNOTA_FINAL();
 	}
 }
