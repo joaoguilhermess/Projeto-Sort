@@ -13,14 +13,55 @@ public class Main {
 	private static FileWriter writer;
 
 	public static void main(String[] args) {
+		try {
+			file = new File("./data/results.csv");
+
+			writer = new FileWriter(file, true);
+
+			if (!file.exists()) {
+				writer.append(
+					"Método" +
+					";" +
+					"Quantidade" +
+					";" +
+					"Trocas" +
+					";" +
+					"Comparações" +
+					";" +
+					"Duração" +
+					"\n"
+				);
+			}
+
+			List<Report> list = readInput();
+
+			Sort sort = new Sort(list);
+
+			sort.mergeSort();
+
+			printResults("mergeSort", sort);
+
+			Search search = new Search(list);
+
+			search.sequentialSearch("IVES RAYLLAN DO NASCIMENTO SOUZA");
+
+			printResults("sequentialSearch", search);
+
+			writer.close();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+	}
+
+	public static void main2(String[] args) {
 		int[] amounts = {
-			400_000,
-			500_000,
-			600_000,
-			700_000,
-			800_000,
-			900_000,
-			1_000_000
+			400_000
+			// 500_000,
+			// 600_000,
+			// 700_000,
+			// 800_000,
+			// 900_000,
+			// 1_000_000
 		};
 
 		try {
@@ -97,8 +138,27 @@ public class Main {
 
 		printResults("mergeSort", sort);
 	}
+	
+	public static void writeResults(String method, Search search) {
+		try {
+			writer.append(
+				method +
+				";" +
+				Util.formatNumber(search.getAmount()) +
+				";" +
+				"" +
+				";" +
+				Util.formatNumber(search.getComparisons()) +
+				";" +
+				Util.formatTime(search.getDuration()) +
+				"\n"
+			);
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+	}
 
-	public static void writerResults(String method, Sort sort) {
+	public static void writeResults(String method, Sort sort) {
 		try {
 			writer.append(
 				method +
@@ -117,6 +177,15 @@ public class Main {
 		}
 	}
 
+	public static void printResults(String method, Search search) {
+		System.out.println("Método: " + method);
+		System.out.println("Comparações: " + Util.formatNumber(search.getComparisons()));
+		System.out.println("Duração: " + Util.formatTime(search.getDuration()));
+		System.out.println();
+
+		writeResults(method, search);
+	}
+
 	public static void printResults(String method, Sort sort) {
 		System.out.println("Método: " + method);
 		System.out.println("Trocas: " + Util.formatNumber(sort.getSwaps()));
@@ -124,7 +193,7 @@ public class Main {
 		System.out.println("Duração: " + Util.formatTime(sort.getDuration()));
 		System.out.println();
 
-		writerResults(method, sort);
+		writeResults(method, sort);
 	}
 
 	public static List<Report> readInput() {
@@ -154,7 +223,7 @@ public class Main {
 					break;
 				}
 
-				if (lines % 1000 == 0) Thread.sleep(1);
+				// if (lines % 1000 == 0) Thread.sleep(1);
 			}
 		} catch(Exception exception) {
 			exception.printStackTrace();

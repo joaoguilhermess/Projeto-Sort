@@ -1,7 +1,6 @@
-import java.util.ArrayList;
 import java.util.List;
 
-public class Sort {
+public class Sort extends Chronometer {
 	private List<Report> reports;
 
 	private long comparisons;
@@ -27,18 +26,6 @@ public class Sort {
 
 	public long getSwaps() {
 		return this.swaps;
-	}
-
-	public void start() {
-		this.startTime = System.nanoTime();
-	}
-
-	public void stop() {
-		this.duration = System.nanoTime() - this.startTime;
-	}
-
-	public long getDuration() {
-		return this.duration;
 	}
 
 	private void swap(int indexA, int indexB) {
@@ -177,7 +164,7 @@ public class Sort {
 		
 	}
 	
-	public void quickySort() {
+	public void quickSort() {
 
 	}
 }
