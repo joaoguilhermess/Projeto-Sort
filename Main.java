@@ -107,15 +107,45 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		limit = 0;
+		try {
+			file = new File("./data/results.csv");
 
-		// Tree tree = Report.readReportsTree(path, limit);
-		BalancedTree tree = Report.readReportsBalancedTree(path, limit);
+			writer = new FileWriter(file, true);
 
-		Report result = tree.search("IVES RAYLLAN DO NASCIMENTO SOUZA");
+			if (!file.exists()) {
+				writer.append(
+					"Método" +
+					";" +
+					"Quantidade" +
+					";" +
+					"Trocas" +
+					";" +
+					"Comparações" +
+					";" +
+					"Duração" +
+					";" +
+					"Duração MS" +
+					"\n"
+				);
+			}
 
-		System.out.println(result.getNOME());
-		System.out.println(result.getNOTA_FINAL());
+			limit = 0;
+
+			// Tree tree = Report.readReportsTree(path, limit);
+			BalancedTree tree = Report.readReportsBalancedTree(path, limit);
+
+			Report result = tree.search("IVES RAYLLAN DO NASCIMENTO SOUZA");
+
+			printResults("Tree", tree);
+			printResults("balancedTree", tree);
+
+			System.out.println(result.getNOME());
+			System.out.println(result.getNOTA_FINAL());
+
+			writer.close();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
 	}
 
 	public static void bubbleSort() {
@@ -178,6 +208,48 @@ public class Main {
 		printResults("quickSort", sort);
 	}
 
+	public static void writeResults(String method, BalancedTree balancedTree) {
+		try {
+			writer.append(
+				method +
+				";" +
+				Util.formatNumber(balancedTree.getAmount()) +
+				";" +
+				"" +
+				";" +
+				Util.formatNumber(balancedTree.getComparisons()) +
+				";" +
+				Util.formatTime(balancedTree.getDuration()) +
+				";" +
+				balancedTree.getDuration() +
+				"\n"
+			);
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+	}
+
+	public static void writeResults(String method, Tree tree) {
+		try {
+			writer.append(
+				method +
+				";" +
+				Util.formatNumber(tree.getAmount()) +
+				";" +
+				"" +
+				";" +
+				Util.formatNumber(tree.getComparisons()) +
+				";" +
+				Util.formatTime(tree.getDuration()) +
+				";" +
+				tree.getDuration() +
+				"\n"
+			);
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+	}
+
 	public static void writeResults(String method, Search search) {
 		try {
 			writer.append(
@@ -218,6 +290,24 @@ public class Main {
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
+	}
+
+	public static void printResults(String method, BalancedTree balancedTree) {
+		System.out.println("Método: " + method);
+		System.out.println("Comparações: " + Util.formatNumber(balancedTree.getComparisons()));
+		System.out.println("Duração: " + Util.formatTime(balancedTree.getDuration()));
+		System.out.println();
+
+		writeResults(method, balancedTree);
+	}
+
+	public static void printResults(String method, Tree tree) {
+		System.out.println("Método: " + method);
+		System.out.println("Comparações: " + Util.formatNumber(tree.getComparisons()));
+		System.out.println("Duração: " + Util.formatTime(tree.getDuration()));
+		System.out.println();
+
+		writeResults(method, tree);
 	}
 
 	public static void printResults(String method, Search search) {
