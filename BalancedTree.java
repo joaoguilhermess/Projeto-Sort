@@ -1,52 +1,4 @@
-public class BalancedTree extends Chronometer {
-	private class Node {
-		Report report;
-		Node left;
-		Node right;
-		int height;
-
-		Node(Report report) {
-			this.report = report;
-			
-			this.left = null;
-			this.right = null;
-
-			this.height = 1;
-		}
-	}
-
-	private long amount;
-	private long comparisons;
-
-	Node root;
-
-	public BalancedTree() {
-		this.amount = 0;
-		this.comparisons = 0;
-	}
-
-	public long getAmount() {
-		return this.amount;
-	}
-
-	public long getComparisons() {
-		return this.comparisons;
-	}
-
-	public void add(Report report) {
-		this.amount += 1;
-
-		this.root = this.recursiveAdd(this.root, report);
-	}
-
-	private int getHeight(Node node) {
-		if (node == null) {
-			return 0;
-		}
-
-		return node.height;
-	}
-
+public class BalancedTree extends Tree {
 	private int getBalance(Node node) {
 		if (node == null) {
 			return 0;
@@ -85,6 +37,7 @@ public class BalancedTree extends Chronometer {
 		return nodeB;
 	}
 
+	@Override
 	public Node recursiveAdd(Node root, Report report) {
 		if (root == null) return new Node(report);
 
@@ -117,31 +70,5 @@ public class BalancedTree extends Chronometer {
 		}
 
 		return root;
-	}
-
-	private Report recursiveSearch(Node root, String value) {
-		if (root == null) return null;
-
-		int comparison = root.report.getNOME().compareTo(value);
-
-		this.comparisons += 1;
-
-		if (comparison == 0) {
-			return root.report;
-		} else if (comparison < 0) {
-			return this.recursiveSearch(root.left, value);
-		} else {
-			return this.recursiveSearch(root.right, value);
-		}
-	}
-
-	public Report search(String value) {
-		this.start();
-
-		Report report = this.recursiveSearch(this.root, value);
-
-		this.stop();
-		
-		return report;
 	}
 }

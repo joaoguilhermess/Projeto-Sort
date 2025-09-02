@@ -1,17 +1,4 @@
 public class Tree extends Chronometer {
-	private class Node {
-		Report report;
-		Node left;
-		Node right;
-
-		Node(Report report) {
-			this.report = report;
-
-			this.left = null;
-			this.right = null;
-		}
-	}
-
 	private long amount;
 	private long comparisons;
 
@@ -36,7 +23,19 @@ public class Tree extends Chronometer {
 		this.root = this.recursiveAdd(this.root, report);
 	}
 
-	private Node recursiveAdd(Node root, Report report) {
+	public int getHeight() {
+		return this.getHeight(this.root);
+	}
+
+	public int getHeight(Node node) {
+		if (node == null) {
+			return 0;
+		}
+
+		return node.height;
+	}
+
+	public Node recursiveAdd(Node root, Report report) {
 		if (root == null) return new Node(report);
 
 		int comparison = root.report.getNOME().compareTo(report.getNOME());
@@ -46,6 +45,8 @@ public class Tree extends Chronometer {
 		} else {
 			root.right = this.recursiveAdd(root.right, report);
 		}
+
+		root.height = Math.max(this.getHeight(root.left), this.getHeight(root.right)) + 1;
 
 		return root;
 	}

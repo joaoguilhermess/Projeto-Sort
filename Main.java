@@ -7,6 +7,7 @@ public class Main {
 	private static int limit = 0;
 	private static File file;
 	private static FileWriter writer;
+	private static final String cobaia = "IVES RAYLLAN DO NASCIMENTO SOUZA";
 
 	public static void main(String[] args) {
 		int[] amounts = {
@@ -139,7 +140,7 @@ public class Main {
 
 		Search search = new Search(list);
 
-		Report result = search.sequentialSearch("IVES RAYLLAN DO NASCIMENTO SOUZA");
+		Report result = search.sequentialSearch(cobaia);
 
 		printResults("sequentialSearch", search);
 
@@ -162,7 +163,7 @@ public class Main {
 
 		Search search = new Search(list);
 
-		Report result = search.binarySearch("IVES RAYLLAN DO NASCIMENTO SOUZA");
+		Report result = search.binarySearch(cobaia);
 
 		printResults("binarySearch", search);
 
@@ -179,7 +180,7 @@ public class Main {
 	private static void tree() {
 		Tree tree = Report.readReportsTree(path, limit);
 
-		Report result = tree.search("IVES RAYLLAN DO NASCIMENTO SOUZA");
+		Report result = tree.search(cobaia);
 
 		printResults("tree", tree);
 
@@ -196,7 +197,7 @@ public class Main {
 	private static void balancedTree() {
 		BalancedTree tree = Report.readReportsBalancedTree(path, limit);
 
-		Report result = tree.search("IVES RAYLLAN DO NASCIMENTO SOUZA");
+		Report result = tree.search(cobaia);
 
 		printResults("balancedTree", tree);
 
@@ -217,7 +218,7 @@ public class Main {
 				";" +
 				Util.formatNumber(balancedTree.getAmount()) +
 				";" +
-				"" +
+				balancedTree.getHeight() +
 				";" +
 				Util.formatNumber(balancedTree.getComparisons()) +
 				";" +
@@ -238,7 +239,7 @@ public class Main {
 				";" +
 				Util.formatNumber(tree.getAmount()) +
 				";" +
-				"" +
+				tree.getHeight() +
 				";" +
 				Util.formatNumber(tree.getComparisons()) +
 				";" +
@@ -296,6 +297,7 @@ public class Main {
 
 	private static void printResults(String method, BalancedTree balancedTree) {
 		System.out.println("Método: " + method);
+		System.out.println("Altura: " + Util.formatNumber(balancedTree.getHeight()));
 		System.out.println("Comparações: " + Util.formatNumber(balancedTree.getComparisons()));
 		System.out.println("Duração: " + Util.formatTime(balancedTree.getDuration()));
 		System.out.println();
@@ -305,6 +307,7 @@ public class Main {
 
 	private static void printResults(String method, Tree tree) {
 		System.out.println("Método: " + method);
+		System.out.println("Altura: " + Util.formatNumber(tree.getHeight()));
 		System.out.println("Comparações: " + Util.formatNumber(tree.getComparisons()));
 		System.out.println("Duração: " + Util.formatTime(tree.getDuration()));
 		System.out.println();

@@ -54,19 +54,19 @@ public class Search extends Chronometer {
 
 			current = this.reports.get(middle);
 
-			this.comparisons += 1;
+			int comparison = current.getNOME().compareTo(value);
 			
-			if (current.getNOME().equals(value)) {
+			this.comparisons += 1;
+
+			if (comparison == 0) {
 				this.stop();
 
 				return current;
-			} else if (current.getNOME().compareTo(value) > 0) {
+			} else if (comparison < 0) {
 				left = middle + 1;
 			} else {
 				right = middle - 1;
-			}
-		
-			this.comparisons += 1;
+			}		
 		}
 
 		this.stop();
