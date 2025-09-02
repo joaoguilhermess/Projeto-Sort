@@ -8,61 +8,19 @@ public class Main {
 	private static File file;
 	private static FileWriter writer;
 
-	public static void main2(String[] args) {
-		try {
-			file = new File("./data/results.csv");
-
-			writer = new FileWriter(file, true);
-
-			if (!file.exists()) {
-				writer.append(
-					"Método" +
-					";" +
-					"Quantidade" +
-					";" +
-					"Trocas" +
-					";" +
-					"Comparações" +
-					";" +
-					"Duração" +
-					"\n"
-				);
-			}
-
-			List<Report> list = Report.readReportsList(path, limit);
-
-			Sort sort = new Sort(list);
-
-			sort.mergeSort();
-
-			printResults("mergeSort", sort);
-
-			// Search search = new Search(list);
-
-			// search.binarySearch("IVES RAYLLAN DO NASCIMENTO SOUZA");
-
-			// printResults("binarySearch", search);
-
-			writer.close();
-		} catch (Exception exception) {
-			exception.printStackTrace();
-		}
-	}
-
-	public static void main3(String[] args) {
+	public static void main(String[] args) {
 		int[] amounts = {
-			// 10,
-			// 1000,
-			// 10_000,
-			// 50_000,
-			// 100_000,
-			// 200_000,
-			// 300_000,
-			// 400_000,
-			// 500_000,
+			1_000,
+			10_000,
+			50_000,
+			100_000,
+			200_000,
+			300_000,
+			400_000,
+			500_000,
 			1_000_000,
 			2_000_000,
-			0,
+			0
 		};
 
 		try {
@@ -95,9 +53,15 @@ public class Main {
 				// insertSort();
 				// mergeSort();
 
-				mergeSort();
+				// mergeSort();
 				// heapSort();
 				// quickSort();
+
+				sequentialSearch();
+				binarySearch();
+
+				tree();
+				balancedTree();
 			}
 
 			writer.close();
@@ -106,49 +70,7 @@ public class Main {
 		}
 	}
 
-	public static void main(String[] args) {
-		try {
-			file = new File("./data/results.csv");
-
-			writer = new FileWriter(file, true);
-
-			if (!file.exists()) {
-				writer.append(
-					"Método" +
-					";" +
-					"Quantidade" +
-					";" +
-					"Trocas" +
-					";" +
-					"Comparações" +
-					";" +
-					"Duração" +
-					";" +
-					"Duração MS" +
-					"\n"
-				);
-			}
-
-			limit = 0;
-
-			// Tree tree = Report.readReportsTree(path, limit);
-			BalancedTree tree = Report.readReportsBalancedTree(path, limit);
-
-			Report result = tree.search("IVES RAYLLAN DO NASCIMENTO SOUZA");
-
-			printResults("Tree", tree);
-			printResults("balancedTree", tree);
-
-			System.out.println(result.getNOME());
-			System.out.println(result.getNOTA_FINAL());
-
-			writer.close();
-		} catch (Exception exception) {
-			exception.printStackTrace();
-		}
-	}
-
-	public static void bubbleSort() {
+	private static void bubbleSort() {
 		List<Report> list = Report.readReportsList(path, limit);
 
 		Sort sort = new Sort(list);
@@ -158,7 +80,7 @@ public class Main {
 		printResults("bubbleSort", sort);
 	}
 
-	public static void selectSort() {
+	private static void selectSort() {
 		List<Report> list = Report.readReportsList(path, limit);
 
 		Sort sort = new Sort(list);
@@ -168,7 +90,7 @@ public class Main {
 		printResults("selectSort", sort);
 	}
 
-	public static void insertSort() {
+	private static void insertSort() {
 		List<Report> list = Report.readReportsList(path, limit);
 
 		Sort sort = new Sort(list);
@@ -178,7 +100,7 @@ public class Main {
 		printResults("insertSort", sort);
 	}
 
-	public static void mergeSort() {
+	private static void mergeSort() {
 		List<Report> list = Report.readReportsList(path, limit);
 
 		Sort sort = new Sort(list);
@@ -188,7 +110,7 @@ public class Main {
 		printResults("mergeSort", sort);
 	}
 
-	public static void heapSort() {
+	private static void heapSort() {
 		List<Report> list = Report.readReportsList(path, limit);
 
 		Sort sort = new Sort(list);
@@ -198,7 +120,7 @@ public class Main {
 		printResults("heapSort", sort);
 	}
 
-	public static void quickSort() {
+	private static void quickSort() {
 		List<Report> list = Report.readReportsList(path, limit);
 
 		Sort sort = new Sort(list);
@@ -208,7 +130,87 @@ public class Main {
 		printResults("quickSort", sort);
 	}
 
-	public static void writeResults(String method, BalancedTree balancedTree) {
+	private static void sequentialSearch() {
+		List<Report> list = Report.readReportsList(path, limit);
+
+		Sort sort = new Sort(list);
+
+		sort.mergeSort();
+
+		Search search = new Search(list);
+
+		Report result = search.sequentialSearch("IVES RAYLLAN DO NASCIMENTO SOUZA");
+
+		printResults("sequentialSearch", search);
+
+		if (result != null) {
+			System.out.println(result.getNOME());
+			System.out.println(result.getNOTA_FINAL());
+		} else {
+			System.out.println("Não Encontrado");
+		}
+	
+		System.out.println("");
+	}
+
+	private static void binarySearch() {
+		List<Report> list = Report.readReportsList(path, limit);
+
+		Sort sort = new Sort(list);
+
+		sort.mergeSort();
+
+		Search search = new Search(list);
+
+		Report result = search.binarySearch("IVES RAYLLAN DO NASCIMENTO SOUZA");
+
+		printResults("binarySearch", search);
+
+		if (result != null) {
+			System.out.println(result.getNOME());
+			System.out.println(result.getNOTA_FINAL());
+		} else {
+			System.out.println("Não Encontrado");
+		}
+	
+		System.out.println("");
+	}
+
+	private static void tree() {
+		Tree tree = Report.readReportsTree(path, limit);
+
+		Report result = tree.search("IVES RAYLLAN DO NASCIMENTO SOUZA");
+
+		printResults("tree", tree);
+
+		if (result != null) {
+			System.out.println(result.getNOME());
+			System.out.println(result.getNOTA_FINAL());
+		} else {
+			System.out.println("Não Encontrado");
+		}
+	
+		System.out.println("");
+	}
+
+	private static void balancedTree() {
+		BalancedTree tree = Report.readReportsBalancedTree(path, limit);
+
+		Report result = tree.search("IVES RAYLLAN DO NASCIMENTO SOUZA");
+
+		printResults("balancedTree", tree);
+
+		if (result != null) {
+			System.out.println(result.getNOME());
+			System.out.println(result.getNOTA_FINAL());
+		} else {
+			System.out.println("Não Encontrado");
+		}
+	
+		System.out.println("");
+	}
+
+	private static void writeResults(String method, BalancedTree balancedTree) {
 		try {
 			writer.append(
 				method +
@@ -229,7 +231,7 @@ public class Main {
 		}
 	}
 
-	public static void writeResults(String method, Tree tree) {
+	private static void writeResults(String method, Tree tree) {
 		try {
 			writer.append(
 				method +
@@ -250,7 +252,7 @@ public class Main {
 		}
 	}
 
-	public static void writeResults(String method, Search search) {
+	private static void writeResults(String method, Search search) {
 		try {
 			writer.append(
 				method +
@@ -271,7 +273,7 @@ public class Main {
 		}
 	}
 
-	public static void writeResults(String method, Sort sort) {
+	private static void writeResults(String method, Sort sort) {
 		try {
 			writer.append(
 				method +
@@ -292,7 +294,7 @@ public class Main {
 		}
 	}
 
-	public static void printResults(String method, BalancedTree balancedTree) {
+	private static void printResults(String method, BalancedTree balancedTree) {
 		System.out.println("Método: " + method);
 		System.out.println("Comparações: " + Util.formatNumber(balancedTree.getComparisons()));
 		System.out.println("Duração: " + Util.formatTime(balancedTree.getDuration()));
@@ -301,7 +303,7 @@ public class Main {
 		writeResults(method, balancedTree);
 	}
 
-	public static void printResults(String method, Tree tree) {
+	private static void printResults(String method, Tree tree) {
 		System.out.println("Método: " + method);
 		System.out.println("Comparações: " + Util.formatNumber(tree.getComparisons()));
 		System.out.println("Duração: " + Util.formatTime(tree.getDuration()));
@@ -310,7 +312,7 @@ public class Main {
 		writeResults(method, tree);
 	}
 
-	public static void printResults(String method, Search search) {
+	private static void printResults(String method, Search search) {
 		System.out.println("Método: " + method);
 		System.out.println("Comparações: " + Util.formatNumber(search.getComparisons()));
 		System.out.println("Duração: " + Util.formatTime(search.getDuration()));
@@ -319,7 +321,7 @@ public class Main {
 		writeResults(method, search);
 	}
 
-	public static void printResults(String method, Sort sort) {
+	private static void printResults(String method, Sort sort) {
 		System.out.println("Método: " + method);
 		System.out.println("Trocas: " + Util.formatNumber(sort.getSwaps()));
 		System.out.println("Comparações: " + Util.formatNumber(sort.getComparisons()));
