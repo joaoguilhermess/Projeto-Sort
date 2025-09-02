@@ -1,3 +1,9 @@
+import java.io.InputStreamReader;
+import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Report {
 	private int ANO;
 	private int EDICAO;
@@ -70,5 +76,137 @@ public class Report {
 	public static boolean compare(Report reportA, Report reportB) {
 		// return reportA.getNOME().compareTo(reportB.getNOME()) > 0;
 		return reportA.getNOTA_FINAL() <= reportB.getNOTA_FINAL();
+	}
+
+	public static List<Report> readReportsList(String path, int limit) {
+		Chronometer chronometer = new Chronometer();
+
+		chronometer.start();
+
+		System.out.println("Lendo: " + ((limit == 0) ? "Todos" : limit));
+
+		List<Report> result = new ArrayList<>();
+
+		int lines = 0;
+
+		String line;
+
+		try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "utf8"), 1024 * 64);
+
+			while (true) {
+				line = reader.readLine();
+
+				if (line == null) break;
+
+				result.add(new Report(line.split("\\|")));
+
+				lines += 1;
+
+				if (lines >= limit && limit > 0) {
+					break;
+				}
+
+				// if (lines % 1000 == 0) Thread.sleep(1);
+			}
+		} catch(Exception exception) {
+			exception.printStackTrace();
+		}
+
+		chronometer.stop();
+
+		System.out.println("Lidos: " + lines);
+		System.out.println("Duração: " + Util.formatTime(chronometer.getDuration()));
+		System.out.println();
+
+		return result;
+	}
+
+	public static Tree readReportsTree(String path, int limit) {
+		Chronometer chronometer = new Chronometer();
+
+		chronometer.start();
+
+		System.out.println("Lendo: " + ((limit == 0) ? "Todos" : limit));
+
+		Tree tree = new Tree();
+
+		int lines = 0;
+
+		String line;
+
+		try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "utf8"), 1024 * 64);
+
+			while (true) {
+				line = reader.readLine();
+
+				if (line == null) break;
+
+				tree.add(new Report(line.split("\\|")));
+
+				lines += 1;
+
+				if (lines >= limit && limit > 0) {
+					break;
+				}
+
+				// if (lines % 1000 == 0) Thread.sleep(1);
+			}
+		} catch(Exception exception) {
+			exception.printStackTrace();
+		}
+
+		chronometer.stop();
+
+		System.out.println("Lidos: " + lines);
+		System.out.println("Duração: " + Util.formatTime(chronometer.getDuration()));
+		System.out.println();
+
+		return tree;
+	}
+
+	public static BalancedTree readReportsBalancedTree(String path, int limit) {
+		Chronometer chronometer = new Chronometer();
+
+		chronometer.start();
+
+		System.out.println("Lendo: " + ((limit == 0) ? "Todos" : limit));
+
+		BalancedTree tree = new BalancedTree();
+
+		int lines = 0;
+
+		String line;
+
+		try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "utf8"), 1024 * 64);
+
+			while (true) {
+				line = reader.readLine();
+
+				if (line == null) break;
+
+				tree.add(new Report(line.split("\\|")));
+
+				lines += 1;
+
+				if (lines >= limit && limit > 0) {
+					break;
+				}
+
+				// if (lines % 1000 == 0) Thread.sleep(1);
+			}
+		} catch(Exception exception) {
+			exception.printStackTrace();
+		}
+
+		chronometer.stop();
+
+		System.out.println("Lidos: " + lines);
+		System.out.println("Duração: " + Util.formatTime(chronometer.getDuration()));
+		System.out.println();
+
+		return tree;
 	}
 }

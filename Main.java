@@ -1,9 +1,5 @@
-import java.io.InputStreamReader;
-import java.io.FileInputStream;
-import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -12,7 +8,7 @@ public class Main {
 	private static File file;
 	private static FileWriter writer;
 
-	public static void main(String[] args) {
+	public static void main2(String[] args) {
 		try {
 			file = new File("./data/results.csv");
 
@@ -33,7 +29,7 @@ public class Main {
 				);
 			}
 
-			List<Report> list = readInput();
+			List<Report> list = Report.readReportsList(path, limit);
 
 			Sort sort = new Sort(list);
 
@@ -53,15 +49,20 @@ public class Main {
 		}
 	}
 
-	public static void main2(String[] args) {
+	public static void main3(String[] args) {
 		int[] amounts = {
-			400_000,
-			500_000,
-			600_000,
-			700_000,
-			800_000,
-			900_000,
-			1_000_000
+			// 10,
+			// 1000,
+			// 10_000,
+			// 50_000,
+			// 100_000,
+			// 200_000,
+			// 300_000,
+			// 400_000,
+			// 500_000,
+			1_000_000,
+			2_000_000,
+			0,
 		};
 
 		try {
@@ -80,6 +81,8 @@ public class Main {
 					"Comparações" +
 					";" +
 					"Duração" +
+					";" +
+					"Duração MS" +
 					"\n"
 				);
 			}
@@ -87,10 +90,14 @@ public class Main {
 			for (int i = 0; i < amounts.length; i++) {
 				limit = amounts[i];
 
-				bubbleSort();
-				selectSort();
-				insertSort();
+				// bubbleSort();
+				// selectSort();
+				// insertSort();
+				// mergeSort();
+
 				mergeSort();
+				// heapSort();
+				// quickSort();
 			}
 
 			writer.close();
@@ -99,8 +106,20 @@ public class Main {
 		}
 	}
 
+	public static void main(String[] args) {
+		limit = 0;
+
+		// Tree tree = Report.readReportsTree(path, limit);
+		BalancedTree tree = Report.readReportsBalancedTree(path, limit);
+
+		Report result = tree.search("IVES RAYLLAN DO NASCIMENTO SOUZA");
+
+		System.out.println(result.getNOME());
+		System.out.println(result.getNOTA_FINAL());
+	}
+
 	public static void bubbleSort() {
-		List<Report> list = readInput();
+		List<Report> list = Report.readReportsList(path, limit);
 
 		Sort sort = new Sort(list);
 
@@ -110,7 +129,7 @@ public class Main {
 	}
 
 	public static void selectSort() {
-		List<Report> list = readInput();
+		List<Report> list = Report.readReportsList(path, limit);
 
 		Sort sort = new Sort(list);
 
@@ -120,7 +139,7 @@ public class Main {
 	}
 
 	public static void insertSort() {
-		List<Report> list = readInput();
+		List<Report> list = Report.readReportsList(path, limit);
 
 		Sort sort = new Sort(list);
 
@@ -130,13 +149,33 @@ public class Main {
 	}
 
 	public static void mergeSort() {
-		List<Report> list = readInput();
+		List<Report> list = Report.readReportsList(path, limit);
 
 		Sort sort = new Sort(list);
 
 		sort.mergeSort();
 
 		printResults("mergeSort", sort);
+	}
+
+	public static void heapSort() {
+		List<Report> list = Report.readReportsList(path, limit);
+
+		Sort sort = new Sort(list);
+
+		sort.heapSort();
+
+		printResults("heapSort", sort);
+	}
+
+	public static void quickSort() {
+		List<Report> list = Report.readReportsList(path, limit);
+
+		Sort sort = new Sort(list);
+
+		sort.quickSort();
+
+		printResults("quickSort", sort);
 	}
 
 	public static void writeResults(String method, Search search) {
@@ -151,6 +190,8 @@ public class Main {
 				Util.formatNumber(search.getComparisons()) +
 				";" +
 				Util.formatTime(search.getDuration()) +
+				";" +
+				search.getDuration() +
 				"\n"
 			);
 		} catch (Exception exception) {
@@ -170,6 +211,8 @@ public class Main {
 				Util.formatNumber(sort.getComparisons()) +
 				";" +
 				Util.formatTime(sort.getDuration()) +
+				";" +
+				sort.getDuration() +
 				"\n"
 			);
 		} catch (Exception exception) {
@@ -194,45 +237,5 @@ public class Main {
 		System.out.println();
 
 		writeResults(method, sort);
-	}
-
-	public static List<Report> readInput() {
-		long start = System.nanoTime();
-
-		System.out.println("Lendo: " + ((limit == 0) ? "Todos" : limit));
-
-		List<Report> result = new ArrayList<>();
-
-		int lines = 0;
-
-		String line;
-
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "utf8"), 1024 * 64);
-
-			while (true) {
-				line = reader.readLine();
-
-				if (line == null) break;
-
-				result.add(new Report(line.split("\\|")));
-
-				lines += 1;
-
-				if (lines >= limit && limit > 0) {
-					break;
-				}
-
-				// if (lines % 1000 == 0) Thread.sleep(1);
-			}
-		} catch(Exception exception) {
-			exception.printStackTrace();
-		}
-
-		System.out.println("Lidos: " + lines);
-		System.out.println("Duração: " + Util.formatTime(System.nanoTime() - start));
-		System.out.println();
-
-		return result;
 	}
 }
